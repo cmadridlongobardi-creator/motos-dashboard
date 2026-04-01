@@ -142,11 +142,12 @@ tbody td{padding:9px 12px;color:#e6edf3;white-space:nowrap}
   <div class="error-box" id="error" style="display:none">
     <h3>⚠️ Error de conexión</h3>
     <p id="error-msg">No se pudo conectar con Google Sheets.</p>
-    <p style="margin-top:10px">
-      Verificá que el Apps Script esté publicado con acceso<br>
-      <code>Ejecutar como: Yo</code> &nbsp;+&nbsp; <code>Quién tiene acceso: Cualquier persona</code>
+    <p style="margin-top:12px;line-height:1.8">
+      En Apps Script → Implementar → <strong>Nueva implementación</strong><br>
+      · Tipo: <code>Aplicación web</code><br>
+      · Ejecutar como: <code>Yo</code><br>
+      · Acceso: <code>Cualquier persona</code> (NO &quot;con cuenta Google&quot;)
     </p>
-    <p style="margin-top:8px">Luego copiá la nueva URL en la variable <code>API_URL</code> de este archivo.</p>
   </div>
 </div>
 
@@ -171,58 +172,107 @@ function fmt(n){
 }
 function fmtPct(n){ return Number(n).toFixed(1) + "%"; }
 
-// ── Carga de datos via JSONP (evita CORS con Apps Script) ────────
+// ── Carga de datos — 3 estrategias en cascada ────────────────────
 //
-//  ¿Por qué JSONP y no fetch()?
-//  Google Apps Script devuelve una redirección 302 que los navegadores
-//  no siguen en modo CORS sin-cookie. JSONP omite esa restricción
-//  inyectando un <script> tag, que SÍ sigue las redirecciones.
-//  El servidor responde: handleDashboardData({...json...})
-//  y el navegador ejecuta esa función directamente.
+//  El problema: Google Apps Script redirige via accounts.google.com
+//  antes de ejecutar. Con sesión activa de Google, el navegador
+//  bloquea esa redirección (política SameSite de cookies).
+//  Solución: intentar 3 métodos en orden hasta que uno funcione.
 //
+//  Estrategia 1 — Proxy allorigins.win
+//    Hace el fetch desde un servidor externo (sin cookies de Google)
+//    y devuelve el JSON con headers CORS correctos.
+//    Funciona en sesión normal Y incógnito.
+//
+//  Estrategia 2 — Proxy corsproxy.io (backup)
+//    Igual que allorigins pero diferente proveedor.
+//
+//  Estrategia 3 — JSONP directo (último recurso)
+//    Funciona en incógnito o sin sesión de Google.
+//
+var _loadAttempt = 0;
+var _loadTimer   = null;
+
 function loadData() {
-  // Limpiar request anterior
-  var old = document.getElementById("jsonp-req");
-  if (old) old.remove();
+  _loadAttempt = 0;
+  _tryLoad();
+}
 
-  // Registrar callback global antes de inyectar el script
-  window.handleDashboardData = function(data) {
-    try {
-      renderDashboard(data);
-    } catch(err) {
-      showError("Error al procesar datos: " + err.message);
-    }
+function _tryLoad() {
+  if (_loadTimer) clearTimeout(_loadTimer);
+
+  if (_loadAttempt === 0) {
+    _loadViaProxy(
+      "https://api.allorigins.win/get?url=" + encodeURIComponent(API_URL + "?t=" + Date.now()),
+      function(text) {
+        // allorigins envuelve la respuesta en {"contents":"..."}
+        try {
+          var wrapper = JSON.parse(text);
+          var data    = JSON.parse(wrapper.contents);
+          renderDashboard(data);
+        } catch(e) {
+          _loadAttempt = 1;
+          _tryLoad();
+        }
+      },
+      function() { _loadAttempt = 1; _tryLoad(); }
+    );
+
+  } else if (_loadAttempt === 1) {
+    _loadViaProxy(
+      "https://corsproxy.io/?" + encodeURIComponent(API_URL + "?t=" + Date.now()),
+      function(text) {
+        try {
+          var data = JSON.parse(text);
+          renderDashboard(data);
+        } catch(e) {
+          _loadAttempt = 2;
+          _tryLoad();
+        }
+      },
+      function() { _loadAttempt = 2; _tryLoad(); }
+    );
+
+  } else {
+    // Estrategia 3: JSONP directo (funciona sin sesión activa)
+    var old = document.getElementById("jsonp-req");
+    if (old) old.remove();
+
+    var done = false;
+    window.handleDashboardData = function(data) {
+      done = true;
+      try { renderDashboard(data); }
+      catch(e) { showError("Error al procesar datos: " + e.message); }
+    };
+
+    var s   = document.createElement("script");
+    s.id    = "jsonp-req";
+    s.src   = API_URL + "?callback=handleDashboardData&t=" + Date.now();
+    s.onerror = function() {
+      showError(
+        "No se pudo conectar con Google Sheets. " +
+        "Verificá que el Apps Script esté publicado como Aplicación Web " +
+        "con 'Quién tiene acceso: Cualquier persona (incluso anónimos)'."
+      );
+    };
+    _loadTimer = setTimeout(function() {
+      if (!done) showError("Sin respuesta del servidor. Recargá la página.");
+    }, 12000);
+    document.body.appendChild(s);
+  }
+}
+
+function _loadViaProxy(proxyUrl, onSuccess, onError) {
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", proxyUrl, true);
+  xhr.timeout = 10000;
+  xhr.onload = function() {
+    if (xhr.status === 200) { onSuccess(xhr.responseText); }
+    else                    { onError(); }
   };
-
-  var s = document.createElement("script");
-  s.id  = "jsonp-req";
-  // ?callback= le dice al Apps Script qué función llamar
-  // &t= evita que el navegador use caché del request anterior
-  s.src = API_URL + "?callback=handleDashboardData&t=" + Date.now();
-
-  s.onerror = function() {
-    // onerror se dispara si la URL es 404 o hay bloqueo de red
-    showError("No se pudo cargar el script. Verificá que la URL sea correcta y que el Apps Script esté publicado como aplicación web con acceso para 'Cualquier persona'.");
-  };
-
-  // Timeout de seguridad: si en 15 seg no respondió → error
-  var timeout = setTimeout(function() {
-    if (document.getElementById("loading") &&
-        document.getElementById("loading").style.display !== "none") {
-      showError("Tiempo de espera agotado. El Apps Script tardó demasiado en responder.");
-    }
-  }, 15000);
-
-  window.handleDashboardData = function(data) {
-    clearTimeout(timeout);
-    try {
-      renderDashboard(data);
-    } catch(err) {
-      showError("Error al procesar datos: " + err.message);
-    }
-  };
-
-  document.body.appendChild(s);
+  xhr.onerror   = onError;
+  xhr.ontimeout = onError;
+  xhr.send();
 }
 
 function showError(msg) {
