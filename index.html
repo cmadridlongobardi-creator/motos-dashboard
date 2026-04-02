@@ -18,18 +18,28 @@ body{font-family:Arial,sans-serif;background:#0d1117;color:#e6edf3;min-height:10
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 .updated{font-size:10px;color:#8b949e;margin-top:4px}
 .container{padding:18px 24px;max-width:1400px;margin:0 auto}
-
-/* LOADING */
-.loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:16px}
+.loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:12px}
 .spinner{width:40px;height:40px;border:3px solid #21262d;border-top-color:#00c896;border-radius:50%;animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading-text{color:#8b949e;font-size:14px}
-.error-box{background:#2d1b1b;border:1px solid #f85149;border-radius:8px;padding:20px;text-align:center;color:#f85149;max-width:560px;margin:40px auto}
-.error-box h3{margin-bottom:8px}
-.error-box p{font-size:13px;color:#8b949e;margin-top:6px;line-height:1.6}
-.error-box code{background:#1c2128;border:1px solid #30363d;padding:2px 6px;border-radius:4px;font-size:11px;color:#79c0ff}
+.loading-step{color:#3fb950;font-size:12px;font-family:monospace}
 
-/* KPI CARDS */
+/* ERROR */
+.error-box{background:#161b22;border:1px solid #f85149;border-radius:10px;padding:24px;max-width:640px;margin:40px auto}
+.error-box h3{color:#f85149;margin-bottom:16px;font-size:16px}
+.error-steps{list-style:none;display:flex;flex-direction:column;gap:10px}
+.error-steps li{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:#8b949e;line-height:1.5}
+.error-steps li .num{background:#0a3d2b;color:#00c896;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px}
+.error-steps li strong{color:#e6edf3}
+.error-steps li code{background:#0d1117;border:1px solid #30363d;padding:1px 6px;border-radius:4px;font-size:11px;color:#79c0ff}
+.diag-box{margin-top:16px;background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:12px;font-family:monospace;font-size:11px;color:#8b949e;line-height:1.8}
+.diag-box .ok{color:#3fb950}
+.diag-box .fail{color:#f85149}
+.diag-box .warn{color:#e3b341}
+.retry-btn{margin-top:16px;background:#0a3d2b;border:1px solid #00c896;color:#00c896;padding:8px 20px;border-radius:6px;cursor:pointer;font-size:13px;width:100%}
+.retry-btn:hover{background:#0d4f35}
+
+/* KPIs */
 .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
 .kpi{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:16px 18px;position:relative;overflow:hidden}
 .kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:#00c896}
@@ -38,14 +48,10 @@ body{font-family:Arial,sans-serif;background:#0d1117;color:#e6edf3;min-height:10
 .kpi-val.white{color:#e6edf3}
 .kpi-sub{font-size:11px;color:#3fb950;margin-top:5px}
 .kpi-sub.gray{color:#8b949e}
-
-/* CHART CARDS */
 .charts-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
 .chart-card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:16px 18px}
 .chart-title{font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:#8b949e;margin-bottom:14px;display:flex;align-items:center;gap:6px}
 .chart-title .dot{width:7px;height:7px;border-radius:50%;background:#00c896;flex-shrink:0}
-
-/* BAR CHARTS */
 .bar-chart{display:flex;align-items:flex-end;gap:6px;height:130px}
 .bar-col{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;min-width:0}
 .bar-fill{width:100%;border-radius:3px 3px 0 0;background:#00c896;min-height:4px;cursor:pointer;transition:opacity .2s}
@@ -54,8 +60,6 @@ body{font-family:Arial,sans-serif;background:#0d1117;color:#e6edf3;min-height:10
 .bar-amount{font-size:10px;color:#00c896;font-weight:600;white-space:nowrap}
 .bar-label{font-size:9px;color:#8b949e;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .empty-chart{display:flex;align-items:center;justify-content:center;height:130px;color:#8b949e;font-size:12px}
-
-/* ROI */
 .roi-list{display:flex;flex-direction:column;gap:12px}
 .roi-row{display:flex;align-items:center;gap:10px}
 .roi-id{font-size:11px;width:72px;flex-shrink:0}
@@ -68,8 +72,6 @@ body{font-family:Arial,sans-serif;background:#0d1117;color:#e6edf3;min-height:10
 .roi-pct{font-size:11px;color:#8b949e;width:38px;text-align:right;flex-shrink:0}
 .roi-hint{font-size:10px;color:#8b949e;margin-top:8px;display:flex;align-items:center;gap:6px}
 .roi-hint::before{content:'';display:inline-block;width:20px;height:2px;background:#ff6b6b;flex-shrink:0}
-
-/* PROGRESO */
 .prog-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:14px}
 .prog-mini{background:#0d1117;border-radius:8px;padding:12px;text-align:center;border:1px solid #21262d}
 .prog-mini-label{font-size:10px;color:#8b949e;margin-bottom:4px}
@@ -83,8 +85,6 @@ body{font-family:Arial,sans-serif;background:#0d1117;color:#e6edf3;min-height:10
 .prog-header .val{color:#00c896;font-weight:600}
 .prog-bar{height:8px;background:#21262d;border-radius:4px;overflow:hidden}
 .prog-bar-fill{height:100%;background:#00c896;border-radius:4px;transition:width .5s}
-
-/* TABLE */
 .table-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:12px}
 thead tr{background:#0a3d2b}
@@ -100,28 +100,14 @@ tbody td{padding:9px 12px;color:#e6edf3;white-space:nowrap}
 .pct-mini{flex:1;height:5px;background:#21262d;border-radius:3px;overflow:hidden;min-width:60px}
 .pct-mini-fill{height:100%;background:#00c896;border-radius:3px}
 .pct-num{font-size:10px;color:#00c896;width:36px;text-align:right}
-
-/* BOTTOM ROW */
 .bottom-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
-
-/* FOOTER */
 .footer{text-align:center;padding:16px;color:#8b949e;font-size:11px;border-top:1px solid #21262d}
 .footer a{color:#00c896;text-decoration:none}
-
-/* RESPONSIVE */
-@media(max-width:900px){
-  .kpi-row{grid-template-columns:1fr 1fr}
-  .charts-row,.bottom-row{grid-template-columns:1fr}
-}
-@media(max-width:480px){
-  .container{padding:10px 12px}
-  .kpi-val{font-size:22px}
-  .header{padding:12px 16px}
-}
+@media(max-width:900px){.kpi-row{grid-template-columns:1fr 1fr}.charts-row,.bottom-row{grid-template-columns:1fr}}
+@media(max-width:480px){.container{padding:10px 12px}.kpi-val{font-size:22px}.header{padding:12px 16px}}
 </style>
 </head>
 <body>
-
 <div class="header">
   <div class="header-left">
     <div class="header-title">🏍️ Control de <span>Motos</span> — Dashboard en Vivo</div>
@@ -137,17 +123,21 @@ tbody td{padding:9px 12px;color:#e6edf3;white-space:nowrap}
   <div class="loading" id="loading">
     <div class="spinner"></div>
     <div class="loading-text">Conectando con Google Sheets...</div>
+    <div class="loading-step" id="loading-step"></div>
   </div>
   <div id="content" style="display:none"></div>
-  <div class="error-box" id="error" style="display:none">
-    <h3>⚠️ Error de conexión</h3>
-    <p id="error-msg">No se pudo conectar con Google Sheets.</p>
-    <p style="margin-top:12px;line-height:1.8">
-      En Apps Script → Implementar → <strong>Nueva implementación</strong><br>
-      · Tipo: <code>Aplicación web</code><br>
-      · Ejecutar como: <code>Yo</code><br>
-      · Acceso: <code>Cualquier persona</code> (NO &quot;con cuenta Google&quot;)
-    </p>
+  <div id="error" style="display:none">
+    <div class="error-box">
+      <h3>⚠️ No se puede conectar con Google Sheets</h3>
+      <ul class="error-steps">
+        <li><span class="num">1</span><span>En Google Sheets ir a <strong>Extensiones → Apps Script</strong></span></li>
+        <li><span class="num">2</span><span>Clic en <strong>Implementar → Nueva implementación</strong> (siempre nueva, no editar la existente)</span></li>
+        <li><span class="num">3</span><span>Tipo: <code>Aplicación web</code> · Ejecutar como: <code>Yo</code> · Acceso: <code>Cualquier persona</code> (sin "con cuenta de Google")</span></li>
+        <li><span class="num">4</span><span>Copiar la URL nueva que termina en <code>/exec</code> — reemplazarla en <code>API_URL</code> del index.html y subir de nuevo a GitHub</span></li>
+      </ul>
+      <div class="diag-box" id="diag">Diagnóstico:</div>
+      <button class="retry-btn" onclick="location.reload()">🔄 Reintentar</button>
+    </div>
   </div>
 </div>
 
@@ -156,280 +146,201 @@ tbody td{padding:9px 12px;color:#e6edf3;white-space:nowrap}
 </div>
 
 <script>
-// ════════════════════════════════════════════════════════════════
-//  ▶  ÚNICA LÍNEA QUE DEBES CAMBIAR
-//     Pegá la URL del Apps Script publicado (termina en /exec)
-// ════════════════════════════════════════════════════════════════
-// ⚠️  NOTA: Se eliminó el /u/1/ de la URL original — esa parte causaba el error
-//          de "No se puede abrir el archivo" en navegadores con sesión de Google.
-//          La URL correcta NO lleva /u/N/ en el medio.
+// ▶ REEMPLAZAR con la URL del Apps Script publicado
 var API_URL = "https://script.google.com/macros/s/AKfycbzVa2pkN9CHe8-XTfcPzOgcXTVBzz40xi6ZvnczvIre9zBLafde5IkwWIZZv4OLmZtl5Q/exec";
-// ════════════════════════════════════════════════════════════════
 
-// ── Helpers de formato ──────────────────────────────────────────
-function fmt(n){
-  return "$" + Number(n).toLocaleString("es-VE", {minimumFractionDigits:0, maximumFractionDigits:0});
+var diagLines = [];
+function diag(msg, cls) {
+  cls = cls || "";
+  diagLines.push('<span class="' + cls + '">' + msg + '</span>');
+  var el = document.getElementById("diag");
+  if (el) el.innerHTML = "Diagnóstico:<br>" + diagLines.join("<br>");
 }
-function fmtPct(n){ return Number(n).toFixed(1) + "%"; }
+function setStep(msg) {
+  var el = document.getElementById("loading-step");
+  if (el) el.textContent = msg;
+}
 
-// ── Carga de datos — 3 estrategias en cascada ────────────────────
-//
-//  El problema: Google Apps Script redirige via accounts.google.com
-//  antes de ejecutar. Con sesión activa de Google, el navegador
-//  bloquea esa redirección (política SameSite de cookies).
-//  Solución: intentar 3 métodos en orden hasta que uno funcione.
-//
-//  Estrategia 1 — Proxy allorigins.win
-//    Hace el fetch desde un servidor externo (sin cookies de Google)
-//    y devuelve el JSON con headers CORS correctos.
-//    Funciona en sesión normal Y incógnito.
-//
-//  Estrategia 2 — Proxy corsproxy.io (backup)
-//    Igual que allorigins pero diferente proveedor.
-//
-//  Estrategia 3 — JSONP directo (último recurso)
-//    Funciona en incógnito o sin sesión de Google.
-//
-var _loadAttempt = 0;
-var _loadTimer   = null;
+function fmt(n){ return "$"+Number(n).toLocaleString("es-VE",{minimumFractionDigits:0,maximumFractionDigits:0}); }
+function fmtPct(n){ return Number(n).toFixed(1)+"%"; }
 
+// ══════════════════════════════════════════════════════
+// ESTRATEGIA DE CARGA
+// Intenta 3 métodos en orden. Si todos fallan → muestra
+// la caja de error con diagnóstico detallado.
+// ══════════════════════════════════════════════════════
 function loadData() {
-  _loadAttempt = 0;
-  _tryLoad();
+  diagLines = [];
+  setStep("Intentando proxy 1...");
+  diag("URL: " + API_URL);
+
+  // ── Método 1: allorigins.win ─────────────────────────
+  var url1 = "https://api.allorigins.win/get?url=" + encodeURIComponent(API_URL);
+  diag("Método 1: allorigins.win...", "warn");
+  xhrGet(url1, 8000, function(text) {
+    try {
+      var w = JSON.parse(text);
+      // allorigins devuelve {contents, status}
+      // Si Google redirigió a login, contents será HTML, no JSON
+      if (!w.contents) throw new Error("sin contents");
+      var data = JSON.parse(w.contents);
+      if (!data.kpis) throw new Error("JSON no tiene kpis");
+      diag("✓ Método 1 OK", "ok");
+      renderDashboard(data);
+    } catch(e) {
+      diag("✗ Método 1 falló: " + e.message + (w && w.contents ? " | respuesta: " + w.contents.substring(0,80) : ""), "fail");
+      tryMethod2();
+    }
+  }, function(err) {
+    diag("✗ Método 1 error de red: " + err, "fail");
+    tryMethod2();
+  });
 }
 
-function _tryLoad() {
-  if (_loadTimer) clearTimeout(_loadTimer);
-
-  if (_loadAttempt === 0) {
-    _loadViaProxy(
-      "https://api.allorigins.win/get?url=" + encodeURIComponent(API_URL + "?t=" + Date.now()),
-      function(text) {
-        // allorigins envuelve la respuesta en {"contents":"..."}
-        try {
-          var wrapper = JSON.parse(text);
-          var data    = JSON.parse(wrapper.contents);
-          renderDashboard(data);
-        } catch(e) {
-          _loadAttempt = 1;
-          _tryLoad();
-        }
-      },
-      function() { _loadAttempt = 1; _tryLoad(); }
-    );
-
-  } else if (_loadAttempt === 1) {
-    _loadViaProxy(
-      "https://corsproxy.io/?" + encodeURIComponent(API_URL + "?t=" + Date.now()),
-      function(text) {
-        try {
-          var data = JSON.parse(text);
-          renderDashboard(data);
-        } catch(e) {
-          _loadAttempt = 2;
-          _tryLoad();
-        }
-      },
-      function() { _loadAttempt = 2; _tryLoad(); }
-    );
-
-  } else {
-    // Estrategia 3: JSONP directo (funciona sin sesión activa)
-    var old = document.getElementById("jsonp-req");
-    if (old) old.remove();
-
-    var done = false;
-    window.handleDashboardData = function(data) {
-      done = true;
-      try { renderDashboard(data); }
-      catch(e) { showError("Error al procesar datos: " + e.message); }
-    };
-
-    var s   = document.createElement("script");
-    s.id    = "jsonp-req";
-    s.src   = API_URL + "?callback=handleDashboardData&t=" + Date.now();
-    s.onerror = function() {
-      showError(
-        "No se pudo conectar con Google Sheets. " +
-        "Verificá que el Apps Script esté publicado como Aplicación Web " +
-        "con 'Quién tiene acceso: Cualquier persona (incluso anónimos)'."
-      );
-    };
-    _loadTimer = setTimeout(function() {
-      if (!done) showError("Sin respuesta del servidor. Recargá la página.");
-    }, 12000);
-    document.body.appendChild(s);
-  }
+function tryMethod2() {
+  // ── Método 2: corsproxy.io ───────────────────────────
+  setStep("Intentando proxy 2...");
+  var url2 = "https://corsproxy.io/?" + encodeURIComponent(API_URL);
+  diag("Método 2: corsproxy.io...", "warn");
+  xhrGet(url2, 8000, function(text) {
+    try {
+      var data = JSON.parse(text);
+      if (!data.kpis) throw new Error("JSON no tiene kpis");
+      diag("✓ Método 2 OK", "ok");
+      renderDashboard(data);
+    } catch(e) {
+      diag("✗ Método 2 falló: " + e.message, "fail");
+      tryMethod3();
+    }
+  }, function(err) {
+    diag("✗ Método 2 error de red: " + err, "fail");
+    tryMethod3();
+  });
 }
 
-function _loadViaProxy(proxyUrl, onSuccess, onError) {
-  var xhr = new XMLHttpRequest();
-  xhr.open("GET", proxyUrl, true);
-  xhr.timeout = 10000;
-  xhr.onload = function() {
-    if (xhr.status === 200) { onSuccess(xhr.responseText); }
-    else                    { onError(); }
+function tryMethod3() {
+  // ── Método 3: JSONP directo ──────────────────────────
+  setStep("Intentando JSONP directo...");
+  diag("Método 3: JSONP directo...", "warn");
+  var done = false;
+  var old = document.getElementById("js3");
+  if (old) old.remove();
+
+  window._cbMotos = function(data) {
+    done = true;
+    try {
+      if (!data.kpis) throw new Error("sin kpis");
+      diag("✓ Método 3 OK", "ok");
+      renderDashboard(data);
+    } catch(e) {
+      diag("✗ Método 3 parse error: " + e.message, "fail");
+      showError();
+    }
   };
-  xhr.onerror   = onError;
-  xhr.ontimeout = onError;
-  xhr.send();
+
+  var s = document.createElement("script");
+  s.id = "js3";
+  s.src = API_URL + "?callback=_cbMotos&t=" + Date.now();
+  s.onerror = function() {
+    diag("✗ Método 3 error: script no cargó (404 o bloqueo)", "fail");
+    showError();
+  };
+  setTimeout(function() {
+    if (!done) { diag("✗ Método 3 timeout", "fail"); showError(); }
+  }, 8000);
+  document.body.appendChild(s);
 }
 
-function showError(msg) {
+function xhrGet(url, timeout, onOk, onErr) {
+  var x = new XMLHttpRequest();
+  x.open("GET", url, true);
+  x.timeout = timeout;
+  x.onload = function() {
+    if (x.status >= 200 && x.status < 300) onOk(x.responseText);
+    else onErr("HTTP " + x.status);
+  };
+  x.onerror   = function(){ onErr("onerror"); };
+  x.ontimeout = function(){ onErr("timeout"); };
+  x.send();
+}
+
+function showError() {
   document.getElementById("loading").style.display = "none";
   document.getElementById("content").style.display  = "none";
   document.getElementById("error").style.display    = "block";
-  document.getElementById("error-msg").textContent  = msg;
 }
 
-// ── Render principal ─────────────────────────────────────────────
+// ══════════════════════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════════════════════
 function renderDashboard(d) {
   document.getElementById("loading").style.display = "none";
   document.getElementById("error").style.display   = "none";
   document.getElementById("updated").textContent   = "Actualizado: " + (d.updated_at || "—");
 
-  var k    = d.kpis   || {};
-  var html = "";
+  var k = d.kpis || {}, html = "";
 
-  // ── KPI ROW ──────────────────────────────────────────────────
   html += '<div class="kpi-row">';
-  html += kpiCard("💰 Total cobrado",  fmt(k.total_cobrado  || 0), "de " + fmt(k.proyeccion_total || 0) + " proyectados", false);
-  html += kpiCard("🏍️ Motos activas",  k.motos_activas || 0,       "contratos en curso",                                   true);
-  html += kpiCard("📅 Este mes",        fmt(k.este_mes   || 0),    "semana actual: " + fmt(k.esta_semana || 0),             false);
-  html += kpiCard("📈 ROI global",      fmtPct(k.roi_pct || 0),   "de inversión recuperada",                               true);
+  html += kpi("💰 Total cobrado",  fmt(k.total_cobrado||0),   "de "+fmt(k.proyeccion_total||0)+" proyectados", false);
+  html += kpi("🏍️ Motos activas",  k.motos_activas||0,        "contratos en curso", true);
+  html += kpi("📅 Este mes",        fmt(k.este_mes||0),        "semana: "+fmt(k.esta_semana||0), false);
+  html += kpi("📈 ROI global",      fmtPct(k.roi_pct||0),     "de inversión recuperada", true);
   html += '</div>';
 
-  // ── FILA 1: Mensuales + ROI por moto ─────────────────────────
   html += '<div class="charts-row">';
-  html += '<div class="chart-card">';
-  html += '<div class="chart-title"><span class="dot"></span>Ingresos mensuales ($)</div>';
-  html += buildBarChart(d.monthly || [], "mes", "total", false);
+  html += '<div class="chart-card"><div class="chart-title"><span class="dot"></span>Ingresos mensuales</div>'+bars(d.monthly||[],"mes","total",false)+'</div>';
+  html += '<div class="chart-card"><div class="chart-title"><span class="dot"></span>⭐ Retorno por moto</div>'+roiChart(d.motos||[],(d.config||{}).inversion||1200)+'</div>';
   html += '</div>';
 
-  html += '<div class="chart-card">';
-  html += '<div class="chart-title"><span class="dot"></span>⭐ Punto de retorno por moto</div>';
-  html += buildRoiChart(d.motos || [], (d.config || {}).inversion || 1200);
-  html += '</div>';
-  html += '</div>';
-
-  // ── FILA 2: Proyección + Semanales ───────────────────────────
   html += '<div class="bottom-row">';
-
-  html += '<div class="chart-card">';
-  html += '<div class="chart-title"><span class="dot"></span>Proyección total de ingresos</div>';
-  var pctP = (k.proyeccion_total > 0)
-    ? Math.min(100, (k.total_cobrado / k.proyeccion_total) * 100) : 0;
-  html += '<div class="prog-section">';
-  html += '<div class="prog-header"><span class="key">Cobrado vs proyección total</span><span class="val">' + fmtPct(pctP) + '</span></div>';
-  html += '<div class="prog-bar"><div class="prog-bar-fill" style="width:' + pctP + '%"></div></div>';
-  html += '</div>';
-  html += '<div class="prog-grid">';
-  html += miniCard("Cobrado",      fmt(k.total_cobrado || 0),                           "green");
-  html += miniCard("Pendiente",    fmt((k.proyeccion_total||0)-(k.total_cobrado||0)),   "white");
-  html += miniCard("Ganancia neta",fmt(k.ganancia_neta  || 0), (k.ganancia_neta>=0)?"green":"amber");
-  html += '</div></div>';
-
-  html += '<div class="chart-card">';
-  html += '<div class="chart-title"><span class="dot"></span>Ingresos por semana</div>';
-  html += buildBarChart(d.weekly || [], "sem", "total", true);
-  html += '</div>';
+  var pp = k.proyeccion_total>0 ? Math.min(100,(k.total_cobrado/k.proyeccion_total)*100) : 0;
+  html += '<div class="chart-card"><div class="chart-title"><span class="dot"></span>Proyección total</div>';
+  html += '<div class="prog-section"><div class="prog-header"><span class="key">Cobrado vs proyección</span><span class="val">'+fmtPct(pp)+'</span></div><div class="prog-bar"><div class="prog-bar-fill" style="width:'+pp+'%"></div></div></div>';
+  html += '<div class="prog-grid">'+mini("Cobrado",fmt(k.total_cobrado||0),"green")+mini("Pendiente",fmt((k.proyeccion_total||0)-(k.total_cobrado||0)),"white")+mini("Ganancia neta",fmt(k.ganancia_neta||0),(k.ganancia_neta>=0?"green":"amber"))+'</div></div>';
+  html += '<div class="chart-card"><div class="chart-title"><span class="dot"></span>Ingresos semanales</div>'+bars(d.weekly||[],"sem","total",true)+'</div>';
   html += '</div>';
 
-  // ── TABLA ────────────────────────────────────────────────────
-  html += '<div class="chart-card" style="margin-bottom:18px">';
-  html += '<div class="chart-title"><span class="dot"></span>Estado detallado por moto</div>';
-  html += buildTable(d.motos || []);
-  html += '</div>';
+  html += '<div class="chart-card" style="margin-bottom:18px"><div class="chart-title"><span class="dot"></span>Estado por moto</div>'+tabla(d.motos||[])+'</div>';
 
-  document.getElementById("content").innerHTML    = html;
+  document.getElementById("content").innerHTML = html;
   document.getElementById("content").style.display = "block";
 }
 
-// ── Componentes ──────────────────────────────────────────────────
-function kpiCard(label, val, sub, white) {
-  return '<div class="kpi">' +
-    '<div class="kpi-label">' + label + '</div>' +
-    '<div class="kpi-val ' + (white?"white":"") + '">' + val + '</div>' +
-    '<div class="kpi-sub ' + (white?"gray":"")  + '">' + sub + '</div>' +
-    '</div>';
+function kpi(label,val,sub,white){
+  return '<div class="kpi"><div class="kpi-label">'+label+'</div><div class="kpi-val'+(white?' white':'')+'">'+val+'</div><div class="kpi-sub'+(white?' gray':'')+'">'+sub+'</div></div>';
 }
-
-function miniCard(label, val, cls) {
-  return '<div class="prog-mini">' +
-    '<div class="prog-mini-label">' + label + '</div>' +
-    '<div class="prog-mini-val ' + cls + '">' + val + '</div>' +
-    '</div>';
+function mini(label,val,cls){
+  return '<div class="prog-mini"><div class="prog-mini-label">'+label+'</div><div class="prog-mini-val '+cls+'">'+val+'</div></div>';
 }
-
-function buildBarChart(data, keyF, valF, green2) {
-  if (!data || data.length === 0)
-    return '<div class="empty-chart">Sin datos aún</div>';
-  var maxV = Math.max.apply(null, data.map(function(x){return x[valF]||0;}));
-  var html = '<div class="bar-chart">';
-  data.forEach(function(item) {
-    var h = maxV > 0 ? Math.max(6, Math.round((item[valF] / maxV) * 120)) : 6;
-    html += '<div class="bar-col">' +
-      '<div class="bar-amount">' + fmt(item[valF]||0) + '</div>' +
-      '<div class="bar-fill ' + (green2?"green2":"") + '" style="height:' + h + 'px" title="' + item[keyF] + ': ' + fmt(item[valF]||0) + '"></div>' +
-      '<div class="bar-label">' + (item[keyF]||"") + '</div>' +
-      '</div>';
+function bars(data,kf,vf,g2){
+  if(!data||!data.length) return '<div class="empty-chart">Sin datos aún</div>';
+  var mx=Math.max.apply(null,data.map(function(x){return x[vf]||0;}));
+  var h='<div class="bar-chart">';
+  data.forEach(function(it){
+    var ht=mx>0?Math.max(6,Math.round((it[vf]/mx)*120)):6;
+    h+='<div class="bar-col"><div class="bar-amount">'+fmt(it[vf]||0)+'</div><div class="bar-fill'+(g2?' green2':'')+'" style="height:'+ht+'px"></div><div class="bar-label">'+(it[kf]||'')+'</div></div>';
   });
-  html += '</div>';
-  return html;
+  return h+'</div>';
 }
-
-function buildRoiChart(motos, inversion) {
-  if (!motos || motos.length === 0)
-    return '<div class="empty-chart">Sin motos registradas</div>';
-  var html = '<div class="roi-list">';
-  motos.forEach(function(m) {
-    var pct = inversion > 0
-      ? Math.min(100, Math.round((m.total_cobrado / inversion) * 100)) : 0;
-    var nombre_corto = (m.nombre||"").split(" ")[0];
-    html += '<div class="roi-row">' +
-      '<div class="roi-id"><strong>' + m.id + '</strong><span>' + nombre_corto + '</span></div>' +
-      '<div class="roi-bar-bg">' +
-        '<div class="roi-bar-fill ' + (m.roi?"done":"") + '" style="width:' + pct + '%"></div>' +
-        '<div class="roi-marker" title="Punto de recuperación ($' + inversion.toLocaleString() + ')"></div>' +
-      '</div>' +
-      '<span class="roi-pct">' + pct + '%</span>' +
-      '</div>';
+function roiChart(motos,inv){
+  if(!motos||!motos.length) return '<div class="empty-chart">Sin motos</div>';
+  var h='<div class="roi-list">';
+  motos.forEach(function(m){
+    var p=inv>0?Math.min(100,Math.round((m.total_cobrado/inv)*100)):0;
+    h+='<div class="roi-row"><div class="roi-id"><strong>'+m.id+'</strong><span>'+(m.nombre||'').split(' ')[0]+'</span></div><div class="roi-bar-bg"><div class="roi-bar-fill'+(m.roi?' done':'')+'" style="width:'+p+'%"></div><div class="roi-marker"></div></div><span class="roi-pct">'+p+'%</span></div>';
   });
-  html += '</div>';
-  html += '<div class="roi-hint">línea roja = $' + (inversion||0).toLocaleString() + ' (punto de recuperación de inversión)</div>';
-  return html;
+  return h+'</div><div class="roi-hint">línea roja = $'+(inv||0).toLocaleString()+' (recuperación)</div>';
 }
-
-function buildTable(motos) {
-  if (!motos || motos.length === 0)
-    return '<p style="color:#8b949e;padding:12px">Sin datos de motos</p>';
-  var html = '<div class="table-wrap"><table><thead><tr>' +
-    '<th>ID Moto</th><th>Motorizado</th><th>Semanas</th>' +
-    '<th>Cobrado</th><th>Saldo</th><th>Progreso</th><th>Estado</th>' +
-    '</tr></thead><tbody>';
-  var sorted = motos.slice().sort(function(a,b){return (b.pct||0)-(a.pct||0);});
-  sorted.forEach(function(m) {
-    var bc = m.estado==="ACTIVO"     ? "badge-active"  :
-             m.estado==="COMPLETADO" ? "badge-done"    : "badge-pending";
-    html += '<tr>' +
-      '<td><strong style="color:#00c896">' + m.id + '</strong></td>' +
-      '<td>' + (m.nombre||"—") + '</td>' +
-      '<td style="text-align:center"><strong>' + (m.semanas_pagadas||0) + '</strong>' +
-        '<span style="color:#8b949e"> / ' + (m.semanas_total||0) + '</span></td>' +
-      '<td><strong style="color:#00c896">' + fmt(m.total_cobrado||0) + '</strong></td>' +
-      '<td style="color:#8b949e">' + fmt(m.saldo||0) + '</td>' +
-      '<td><div class="pct-wrap">' +
-        '<div class="pct-mini"><div class="pct-mini-fill" style="width:' + (m.pct||0) + '%"></div></div>' +
-        '<span class="pct-num">' + (m.pct||0) + '%</span>' +
-      '</div></td>' +
-      '<td><span class="badge ' + bc + '">' + (m.estado||"—") + '</span></td>' +
-      '</tr>';
+function tabla(motos){
+  if(!motos||!motos.length) return '<p style="color:#8b949e;padding:12px">Sin datos</p>';
+  var h='<div class="table-wrap"><table><thead><tr><th>ID</th><th>Motorizado</th><th>Semanas</th><th>Cobrado</th><th>Saldo</th><th>Progreso</th><th>Estado</th></tr></thead><tbody>';
+  motos.slice().sort(function(a,b){return(b.pct||0)-(a.pct||0);}).forEach(function(m){
+    var bc=m.estado==="ACTIVO"?"badge-active":m.estado==="COMPLETADO"?"badge-done":"badge-pending";
+    h+='<tr><td><strong style="color:#00c896">'+m.id+'</strong></td><td>'+(m.nombre||'—')+'</td><td style="text-align:center"><strong>'+(m.semanas_pagadas||0)+'</strong><span style="color:#8b949e"> / '+(m.semanas_total||0)+'</span></td><td><strong style="color:#00c896">'+fmt(m.total_cobrado||0)+'</strong></td><td style="color:#8b949e">'+fmt(m.saldo||0)+'</td><td><div class="pct-wrap"><div class="pct-mini"><div class="pct-mini-fill" style="width:'+(m.pct||0)+'%"></div></div><span class="pct-num">'+(m.pct||0)+'%</span></div></td><td><span class="badge '+bc+'">'+(m.estado||'—')+'</span></td></tr>';
   });
-  html += '</tbody></table></div>';
-  return html;
+  return h+'</tbody></table></div>';
 }
 
-// ── Iniciar + auto-refresh cada 5 min ───────────────────────────
 loadData();
 setInterval(loadData, 300000);
 </script>
